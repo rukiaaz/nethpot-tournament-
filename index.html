@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>BTG TOURNAMENT BRACKET</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Tournament Bracket</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -15,7 +15,7 @@
             --text-primary: #ffffff;
             --text-secondary: #cccccc;
             --round-title: #ff3366;
-            --glow-intensity: 4px;
+            --player-list-bg: #160e20;
         }
         
         * {
@@ -34,8 +34,10 @@
         }
         
         .container {
-            max-width: 1400px;
+            display: flex;
+            max-width: 1600px;
             margin: 0 auto;
+            gap: 30px;
         }
         
         header {
@@ -105,6 +107,52 @@
             transform: translateY(0);
         }
         
+        .player-list {
+            width: 280px;
+            background: var(--player-list-bg);
+            border-radius: 15px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.2);
+            border: 1px solid rgba(255, 0, 85, 0.3);
+        }
+        
+        .player-list h2 {
+            color: var(--accent-red);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--accent-red);
+            padding-bottom: 10px;
+        }
+        
+        .player-item {
+            padding: 12px 15px;
+            margin: 10px 0;
+            background: rgba(40, 30, 60, 0.6);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .player-item:hover {
+            background: rgba(255, 0, 85, 0.15);
+            transform: translateX(5px);
+        }
+        
+        .player-item i {
+            color: var(--accent-red);
+        }
+        
+        .bracket-container {
+            flex: 1;
+            overflow-x: auto;
+        }
+        
         .bracket {
             display: flex;
             justify-content: center;
@@ -112,6 +160,7 @@
             gap: 40px;
             padding: 20px 0;
             position: relative;
+            min-width: 1000px;
         }
         
         .round {
@@ -244,9 +293,19 @@
         
         /* Responsive design */
         @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .player-list {
+                width: 100%;
+                position: relative;
+            }
+            
             .bracket {
                 gap: 30px;
             }
+            
             .round {
                 min-width: 200px;
             }
@@ -257,10 +316,12 @@
                 flex-direction: column;
                 align-items: center;
             }
+            
             .round {
                 width: 100%;
                 max-width: 500px;
             }
+            
             .connector {
                 display: none;
             }
@@ -306,106 +367,138 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-fire"></i> NETHPOT TOURNAMENT <i class="fas fa-fire"></i></h1>
-            <p class="subtitle">10-Player Single Elimination Bracket</p>
-        </header>
+    <header>
+        <h1><i class="fas fa-fire"></i> Red Tournament <i class="fas fa-fire"></i></h1>
+        <p class="subtitle">14-Player Single Elimination Bracket</p>
         
         <div class="controls">
             <button class="btn" id="simulateBtn"><i class="fas fa-play"></i> Simulate Tournament</button>
             <button class="btn" id="resetBtn"><i class="fas fa-redo"></i> Reset Bracket</button>
         </div>
+    </header>
+    
+    <div class="container">
+        <div class="player-list">
+            <h2>All Players</h2>
+            <div class="player-item"><i class="fas fa-user"></i> ⋆. 𐙚 ˚ Angelll</div>
+            <div class="player-item"><i class="fas fa-user"></i> Loshie</div>
+            <div class="player-item"><i class="fas fa-user"></i> Euiz</div>
+            <div class="player-item"><i class="fas fa-user"></i> weakestShi</div>
+            <div class="player-item"><i class="fas fa-user"></i> Sora</div>
+            <div class="player-item"><i class="fas fa-user"></i> btgz.kairulovesu</div>
+            <div class="player-item"><i class="fas fa-user"></i> btgz.Sharnerf</div>
+            <div class="player-item"><i class="fas fa-user"></i> CushhFTW</div>
+            <div class="player-item"><i class="fas fa-user"></i> hanzo</div>
+            <div class="player-item"><i class="fas fa-user"></i> yat</div>
+            <div class="player-item"><i class="fas fa-user"></i> max</div>
+            <div class="player-item"><i class="fas fa-user"></i> shelly</div>
+            <div class="player-item"><i class="fas fa-user"></i> meraki</div>
+            <div class="player-item"><i class="fas fa-user"></i> riri</div>
+        </div>
         
-        <div class="bracket">
-            <!-- Round 1 -->
-            <div class="round">
-                <div class="round-title">Round 1</div>
-                <div class="match" data-match="1">
-                    <div class="player" data-player="o_oGrey">o_oGrey</div>
-                    <div class="vs">VS</div>
-                    <div class="player" data-player="LilDimee">LilDimee</div>
-                    <div class="connector"></div>
+        <div class="bracket-container">
+            <div class="bracket">
+                <!-- Round 1 -->
+                <div class="round">
+                    <div class="round-title">Round 1</div>
+                    <div class="match" data-match="1">
+                        <div class="player" data-player="⋆. 𐙚 ˚ Angelll">⋆. 𐙚 ˚ Angelll</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-player="Loshie">Loshie</div>
+                        <div class="connector"></div>
+                    </div>
+                    <div class="match" data-match="2">
+                        <div class="player" data-player="Euiz">Euiz</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-player="weakestShi">weakestShi</div>
+                        <div class="connector"></div>
+                    </div>
+                    <div class="match" data-match="3">
+                        <div class="player" data-player="Sora">Sora</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-player="btgz.kairulovesu">btgz.kairulovesu</div>
+                        <div class="connector"></div>
+                    </div>
+                    <div class="match" data-match="4">
+                        <div class="player" data-player="btgz.Sharnerf">btgz.Sharnerf</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-player="CushhFTW">CushhFTW</div>
+                        <div class="connector"></div>
+                    </div>
+                    <div class="match" data-match="5">
+                        <div class="player" data-player="hanzo">hanzo</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-player="yat">yat</div>
+                        <div class="connector"></div>
+                    </div>
+                    <div class="match" data-match="6">
+                        <div class="player" data-player="max">max</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-player="shelly">shelly</div>
+                        <div class="connector"></div>
+                    </div>
+                    <div class="match" data-match="7">
+                        <div class="player" data-player="meraki">meraki</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-player="riri">riri</div>
+                        <div class="connector"></div>
+                    </div>
                 </div>
-                <div class="match" data-match="2">
-                    <div class="player" data-player="FantoomP5">FantoomP5</div>
-                    <div class="vs">VS</div>
-                    <div class="player" data-player="⋆. 𐙚 ˚ Angelll">⋆. 𐙚 ˚ Angelll</div>
-                    <div class="connector"></div>
+                
+                <!-- Quarterfinals -->
+                <div class="round">
+                    <div class="round-title">Quarterfinals</div>
+                    <div class="match" data-match="8">
+                        <div class="player" data-winner-of="1">Winner of Match 1</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-winner-of="2">Winner of Match 2</div>
+                        <div class="connector"></div>
+                    </div>
+                    <div class="match" data-match="9">
+                        <div class="player" data-winner-of="3">Winner of Match 3</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-winner-of="4">Winner of Match 4</div>
+                        <div class="connector"></div>
+                    </div>
+                    <div class="match" data-match="10">
+                        <div class="player" data-winner-of="5">Winner of Match 5</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-winner-of="6">Winner of Match 6</div>
+                        <div class="connector"></div>
+                    </div>
+                    <div class="match" data-match="11">
+                        <div class="player" data-winner-of="7">Winner of Match 7</div>
+                        <div class="bye">Bye to Semifinals</div>
+                        <div class="connector"></div>
+                    </div>
                 </div>
-                <div class="match" data-match="3">
-                    <div class="player" data-player="DONXXXXCIOTE?!">DONXXXXCIOTE?!</div>
-                    <div class="vs">VS</div>
-                    <div class="player" data-player="⋆. 𐙚 ˚ Vanessa">⋆. 𐙚 ˚ Vanessa</div>
-                    <div class="connector"></div>
+                
+                <!-- Semifinals -->
+                <div class="round">
+                    <div class="round-title">Semifinals</div>
+                    <div class="match" data-match="12">
+                        <div class="player" data-winner-of="8">Winner QF 1</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-winner-of="9">Winner QF 2</div>
+                        <div class="connector"></div>
+                    </div>
+                    <div class="match" data-match="13">
+                        <div class="player" data-winner-of="10">Winner QF 3</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-winner-of="11">Winner QF 4</div>
+                        <div class="connector"></div>
+                    </div>
                 </div>
-                <div class="match" data-match="4">
-                    <div class="player" data-player="Loshie">Loshie</div>
-                    <div class="vs">VS</div>
-                    <div class="player" data-player="Euiz">Euiz</div>
-                    <div class="connector"></div>
-                </div>
-                <div class="match" data-match="5">
-                    <div class="player" data-player="weakestShi">weakestShi</div>
-                    <div class="vs">VS</div>
-                    <div class="player" data-player="Sora">Sora</div>
-                    <div class="connector"></div>
-                </div>
-            </div>
-            
-            <!-- Quarterfinals -->
-            <div class="round">
-                <div class="round-title">Quarterfinals</div>
-                <div class="match" data-match="6">
-                    <div class="player" data-player="Tester | Yasue">Tester | Yasue</div>
-                    <div class="vs">VS</div>
-                    <div class="player" data-winner-of="1">Winner of Match 1</div>
-                    <div class="connector"></div>
-                </div>
-                <div class="match" data-match="7">
-                    <div class="player" data-player="drennn">drennn</div>
-                    <div class="vs">VS</div>
-                    <div class="player" data-winner-of="2">Winner of Match 2</div>
-                    <div class="connector"></div>
-                </div>
-                <div class="match" data-match="8">
-                    <div class="player" data-player="btgz.kairulovesu">btgz.kairulovesu</div>
-                    <div class="vs">VS</div>
-                    <div class="player" data-winner-of="3">Winner of Match 3</div>
-                    <div class="connector"></div>
-                </div>
-                <div class="match" data-match="9">
-                    <div class="player" data-player="btgz.Sharnerf">btgz.Sharnerf</div>
-                    <div class="bye">Bye to Semifinals</div>
-                    <div class="connector"></div>
-                </div>
-            </div>
-            
-            <!-- Semifinals -->
-            <div class="round">
-                <div class="round-title">Semifinals</div>
-                <div class="match" data-match="10">
-                    <div class="player" data-winner-of="6">Winner QF 1</div>
-                    <div class="vs">VS</div>
-                    <div class="player" data-winner-of="7">Winner QF 2</div>
-                    <div class="connector"></div>
-                </div>
-                <div class="match" data-match="11">
-                    <div class="player" data-winner-of="8">Winner QF 3</div>
-                    <div class="vs">VS</div>
-                    <div class="player" data-winner-of="9">btgz.Sharnerf</div>
-                    <div class="connector"></div>
-                </div>
-            </div>
-            
-            <!-- Finals -->
-            <div class="round">
-                <div class="round-title">Finals</div>
-                <div class="match" data-match="12">
-                    <div class="player" data-winner-of="10">Winner SF 1</div>
-                    <div class="vs">VS</div>
-                    <div class="player" data-winner-of="11">Winner SF 2</div>
-                    <div class="trophy">🏆</div>
+                
+                <!-- Finals -->
+                <div class="round">
+                    <div class="round-title">Finals</div>
+                    <div class="match" data-match="14">
+                        <div class="player" data-winner-of="12">Winner SF 1</div>
+                        <div class="vs">VS</div>
+                        <div class="player" data-winner-of="13">Winner SF 2</div>
+                        <div class="trophy">🏆</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -428,7 +521,16 @@
                 
                 // Skip if already has a winner
                 if (playerElements[0].classList.contains('winner') || 
-                    playerElements[1].classList.contains('winner')) {
+                    playerElements[1] && playerElements[1].classList.contains('winner')) {
+                    return;
+                }
+                
+                // For matches with bye
+                if (playerElements.length === 1) {
+                    playerElements[0].classList.add('winner');
+                    const winnerName = playerElements[0].dataset.player || playerElements[0].textContent;
+                    winners[matchId] = winnerName;
+                    updateNextMatches(matchId, winnerName);
                     return;
                 }
                 
@@ -449,7 +551,7 @@
                 updateNextMatches(matchId, winnerName);
                 
                 // Add celebration effect to finals
-                if (matchId === '12') {
+                if (matchId === '14') {
                     winnerElement.classList.add('celebrate');
                     setTimeout(() => {
                         alert(`Tournament Champion: ${winnerName}! 🎉`);
@@ -478,7 +580,7 @@
                 resetBracket();
                 
                 // Simulate each match in order
-                const matchOrder = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+                const matchOrder = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'];
                 
                 let delay = 0;
                 matchOrder.forEach(matchId => {
@@ -503,8 +605,7 @@
                 
                 // Reset winner placeholders
                 document.querySelectorAll('[data-winner-of]').forEach(placeholder => {
-                    const originalText = placeholder.dataset.winnerOf === '9' ? 
-                        'btgz.Sharnerf' : `Winner of Match ${placeholder.dataset.winnerOf}`;
+                    const originalText = `Winner of Match ${placeholder.dataset.winnerOf}`;
                     placeholder.textContent = originalText;
                     delete placeholder.dataset.player;
                 });
