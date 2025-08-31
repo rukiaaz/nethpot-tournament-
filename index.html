@@ -1,174 +1,544 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tournament Bracket</title>
-  <style>
-    body {
-      background: #0f0f1a;
-      color: #fff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #ff0077;
-      font-size: 2.5em;
-      margin-bottom: 40px;
-    }
-
-    .bracket {
-      display: flex;
-      justify-content: center;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      gap: 40px;
-    }
-
-    .round {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      position: relative;
-    }
-
-    .round-title {
-      text-align: center;
-      margin-bottom: 10px;
-      font-weight: bold;
-      color: #00ffe5;
-    }
-
-    .match {
-      background: #1f1f2e;
-      border: 1px solid #3a3a5e;
-      border-radius: 12px;
-      padding: 12px 18px;
-      box-shadow: 0 0 8px #00ffee44;
-      transition: 0.3s;
-    }
-
-    .match:hover {
-      box-shadow: 0 0 16px #00ffeeaa;
-      transform: scale(1.03);
-    }
-
-    .player {
-      font-size: 0.95em;
-      margin: 4px 0;
-    }
-
-    .vs {
-      text-align: center;
-      color: #aaa;
-      font-size: 0.8em;
-      margin: 6px 0;
-    }
-
-    .bye {
-      color: #999;
-      font-style: italic;
-      font-size: 0.9em;
-    }
-
-    ::-webkit-scrollbar {
-      height: 8px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #444;
-      border-radius: 10px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>BTG TOURNAMENT BRACKET</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-bg: #0f0c15;
+            --card-bg: #1a1125;
+            --accent-red: #ff0055;
+            --accent-red-dark: #cc0044;
+            --accent-blue: #00ddff;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --round-title: #ff3366;
+            --glow-intensity: 4px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: var(--main-bg);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, var(--accent-red), var(--accent-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-blue));
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, var(--accent-red), var(--accent-red-dark));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 85, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 0, 85, 0.5);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .bracket {
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap;
+            gap: 40px;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        .round {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: relative;
+            min-width: 220px;
+        }
+        
+        .round-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: var(--round-title);
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: sticky;
+            top: 0;
+            background: rgba(15, 12, 21, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .match {
+            background: var(--card-bg);
+            border: 2px solid rgba(255, 0, 85, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .match::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 0, 85, 0.1), transparent);
+            z-index: 0;
+        }
+        
+        .match:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px rgba(255, 0, 85, 0.4);
+            border-color: var(--accent-red);
+        }
+        
+        .player {
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(40, 30, 60, 0.6);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .player:hover {
+            background: rgba(255, 0, 85, 0.15);
+        }
+        
+        .player.winner {
+            background: linear-gradient(90deg, rgba(255, 0, 85, 0.25), transparent);
+            border-left: 4px solid var(--accent-red);
+            color: #fff;
+        }
+        
+        .player.winner::after {
+            content: '👑';
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .vs {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 10px 0;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .bye {
+            color: #999;
+            font-style: italic;
+            font-size: 0.9em;
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .connector {
+            position: absolute;
+            background: linear-gradient(to right, transparent, var(--accent-red), transparent);
+            height: 2px;
+            width: 40px;
+            right: -40px;
+            top: 50%;
+            z-index: -1;
+        }
+        
+        .connector.vertical {
+            width: 2px;
+            height: 50%;
+            right: -20px;
+            top: 75%;
+        }
+        
+        /* Animation for winners */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(255, 0, 85, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 0, 85, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(255, 0, 85, 0.5); }
+        }
+        
+        .winner-highlight {
+            animation: glow 2s infinite;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .bracket {
+                gap: 30px;
+            }
+            .round {
+                min-width: 200px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .bracket {
+                flex-direction: column;
+                align-items: center;
+            }
+            .round {
+                width: 100%;
+                max-width: 500px;
+            }
+            .connector {
+                display: none;
+            }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(20, 15, 30, 0.8);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--accent-red), var(--accent-red-dark));
+            border-radius: 10px;
+        }
+        
+        /* Trophy icon for final */
+        .trophy {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 2.5rem;
+            color: gold;
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+            z-index: 2;
+        }
+        
+        /* Winner celebration animation */
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .celebrate {
+            animation: celebrate 0.5s ease-in-out 3;
+        }
+    </style>
 </head>
 <body>
-  <h1>⚔️ 10-Player Tournament Bracket ⚔️</h1>
-
-  <div class="bracket">
-    
-    <!-- Round 1 -->
-    <div class="round">
-      <div class="round-title">Round 1</div>
-      <div class="match">
-        <div class="player">o_oGrey</div>
-        <div class="vs">vs</div>
-        <div class="player">LilDimee</div>
-      </div>
-      <div class="match">
-        <div class="player">FantoomP5</div>
-        <div class="vs">vs</div>
-        <div class="player">⋆. 𐙚 ˚ Angelll</div>
-      </div>
-      <div class="match">
-        <div class="player">DONXXXXCIOTE?!</div>
-        <div class="vs">vs</div>
-        <div class="player">⋆. 𐙚 ˚ Vanessa</div>
-      </div>
-      <div class="match">
-        <div class="player">Loshie</div>
-        <div class="vs">vs</div>
-        <div class="player">Euiz</div>
-      </div>
-      <div class="match">
-        <div class="player">weakestShi</div>
-        <div class="vs">vs</div>
-        <div class="player">Sora</div>
-      </div>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-fire"></i> NETHPOT TOURNAMENT <i class="fas fa-fire"></i></h1>
+            <p class="subtitle">10-Player Single Elimination Bracket</p>
+        </header>
+        
+        <div class="controls">
+            <button class="btn" id="simulateBtn"><i class="fas fa-play"></i> Simulate Tournament</button>
+            <button class="btn" id="resetBtn"><i class="fas fa-redo"></i> Reset Bracket</button>
+        </div>
+        
+        <div class="bracket">
+            <!-- Round 1 -->
+            <div class="round">
+                <div class="round-title">Round 1</div>
+                <div class="match" data-match="1">
+                    <div class="player" data-player="o_oGrey">o_oGrey</div>
+                    <div class="vs">VS</div>
+                    <div class="player" data-player="LilDimee">LilDimee</div>
+                    <div class="connector"></div>
+                </div>
+                <div class="match" data-match="2">
+                    <div class="player" data-player="FantoomP5">FantoomP5</div>
+                    <div class="vs">VS</div>
+                    <div class="player" data-player="⋆. 𐙚 ˚ Angelll">⋆. 𐙚 ˚ Angelll</div>
+                    <div class="connector"></div>
+                </div>
+                <div class="match" data-match="3">
+                    <div class="player" data-player="DONXXXXCIOTE?!">DONXXXXCIOTE?!</div>
+                    <div class="vs">VS</div>
+                    <div class="player" data-player="⋆. 𐙚 ˚ Vanessa">⋆. 𐙚 ˚ Vanessa</div>
+                    <div class="connector"></div>
+                </div>
+                <div class="match" data-match="4">
+                    <div class="player" data-player="Loshie">Loshie</div>
+                    <div class="vs">VS</div>
+                    <div class="player" data-player="Euiz">Euiz</div>
+                    <div class="connector"></div>
+                </div>
+                <div class="match" data-match="5">
+                    <div class="player" data-player="weakestShi">weakestShi</div>
+                    <div class="vs">VS</div>
+                    <div class="player" data-player="Sora">Sora</div>
+                    <div class="connector"></div>
+                </div>
+            </div>
+            
+            <!-- Quarterfinals -->
+            <div class="round">
+                <div class="round-title">Quarterfinals</div>
+                <div class="match" data-match="6">
+                    <div class="player" data-player="Tester | Yasue">Tester | Yasue</div>
+                    <div class="vs">VS</div>
+                    <div class="player" data-winner-of="1">Winner of Match 1</div>
+                    <div class="connector"></div>
+                </div>
+                <div class="match" data-match="7">
+                    <div class="player" data-player="drennn">drennn</div>
+                    <div class="vs">VS</div>
+                    <div class="player" data-winner-of="2">Winner of Match 2</div>
+                    <div class="connector"></div>
+                </div>
+                <div class="match" data-match="8">
+                    <div class="player" data-player="btgz.kairulovesu">btgz.kairulovesu</div>
+                    <div class="vs">VS</div>
+                    <div class="player" data-winner-of="3">Winner of Match 3</div>
+                    <div class="connector"></div>
+                </div>
+                <div class="match" data-match="9">
+                    <div class="player" data-player="btgz.Sharnerf">btgz.Sharnerf</div>
+                    <div class="bye">Bye to Semifinals</div>
+                    <div class="connector"></div>
+                </div>
+            </div>
+            
+            <!-- Semifinals -->
+            <div class="round">
+                <div class="round-title">Semifinals</div>
+                <div class="match" data-match="10">
+                    <div class="player" data-winner-of="6">Winner QF 1</div>
+                    <div class="vs">VS</div>
+                    <div class="player" data-winner-of="7">Winner QF 2</div>
+                    <div class="connector"></div>
+                </div>
+                <div class="match" data-match="11">
+                    <div class="player" data-winner-of="8">Winner QF 3</div>
+                    <div class="vs">VS</div>
+                    <div class="player" data-winner-of="9">btgz.Sharnerf</div>
+                    <div class="connector"></div>
+                </div>
+            </div>
+            
+            <!-- Finals -->
+            <div class="round">
+                <div class="round-title">Finals</div>
+                <div class="match" data-match="12">
+                    <div class="player" data-winner-of="10">Winner SF 1</div>
+                    <div class="vs">VS</div>
+                    <div class="player" data-winner-of="11">Winner SF 2</div>
+                    <div class="trophy">🏆</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Quarterfinals -->
-    <div class="round">
-      <div class="round-title">Quarterfinals</div>
-      <div class="match">
-        <div class="player">Tester | Yasue</div>
-        <div class="vs">vs</div>
-        <div class="player">Winner of Match 1</div>
-      </div>
-      <div class="match">
-        <div class="player">drennn</div>
-        <div class="vs">vs</div>
-        <div class="player">Winner of Match 2</div>
-      </div>
-      <div class="match">
-        <div class="player">btgz.kairulovesu</div>
-        <div class="vs">vs</div>
-        <div class="player">Winner of Match 3</div>
-      </div>
-      <div class="match">
-        <div class="player">btgz.Sharnerf</div>
-        <div class="bye">Bye to Semifinals</div>
-      </div>
-    </div>
-
-    <!-- Semifinals -->
-    <div class="round">
-      <div class="round-title">Semifinals</div>
-      <div class="match">
-        <div class="player">Winner QF 1</div>
-        <div class="vs">vs</div>
-        <div class="player">Winner QF 2</div>
-      </div>
-      <div class="match">
-        <div class="player">Winner QF 3</div>
-        <div class="vs">vs</div>
-        <div class="player">btgz.Sharnerf</div>
-      </div>
-    </div>
-
-    <!-- Finals -->
-    <div class="round">
-      <div class="round-title">Finals</div>
-      <div class="match">
-        <div class="player">Winner SF 1</div>
-        <div class="vs">vs</div>
-        <div class="player">Winner SF 2</div>
-      </div>
-    </div>
-  </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const simulateBtn = document.getElementById('simulateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const matches = document.querySelectorAll('.match');
+            const players = document.querySelectorAll('.player:not([data-winner-of])');
+            
+            // Store winners for each match
+            const winners = {};
+            
+            // Function to simulate a match
+            function simulateMatch(matchElement) {
+                const matchId = matchElement.dataset.match;
+                const playerElements = matchElement.querySelectorAll('.player:not(.bye)');
+                
+                // Skip if already has a winner
+                if (playerElements[0].classList.contains('winner') || 
+                    playerElements[1].classList.contains('winner')) {
+                    return;
+                }
+                
+                // Randomly select a winner
+                const randomIndex = Math.floor(Math.random() * 2);
+                const winnerElement = playerElements[randomIndex];
+                const winnerName = winnerElement.dataset.player || winnerElement.textContent;
+                
+                // Mark as winner
+                playerElements.forEach(player => player.classList.remove('winner'));
+                winnerElement.classList.add('winner');
+                winnerElement.classList.add('winner-highlight');
+                
+                // Store winner
+                winners[matchId] = winnerName;
+                
+                // Update next matches
+                updateNextMatches(matchId, winnerName);
+                
+                // Add celebration effect to finals
+                if (matchId === '12') {
+                    winnerElement.classList.add('celebrate');
+                    setTimeout(() => {
+                        alert(`Tournament Champion: ${winnerName}! 🎉`);
+                    }, 1500);
+                }
+                
+                // Remove highlight after animation
+                setTimeout(() => {
+                    winnerElement.classList.remove('winner-highlight');
+                }, 2000);
+            }
+            
+            // Function to update next matches with winner
+            function updateNextMatches(matchId, winnerName) {
+                const nextMatchPlayers = document.querySelectorAll(`[data-winner-of="${matchId}"]`);
+                
+                nextMatchPlayers.forEach(playerElement => {
+                    playerElement.textContent = winnerName;
+                    playerElement.dataset.player = winnerName;
+                });
+            }
+            
+            // Function to simulate the entire tournament
+            function simulateTournament() {
+                // Reset first
+                resetBracket();
+                
+                // Simulate each match in order
+                const matchOrder = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+                
+                let delay = 0;
+                matchOrder.forEach(matchId => {
+                    const matchElement = document.querySelector(`[data-match="${matchId}"]`);
+                    if (matchElement) {
+                        setTimeout(() => {
+                            simulateMatch(matchElement);
+                        }, delay);
+                        delay += 800; // Add delay between matches
+                    }
+                });
+            }
+            
+            // Function to reset the bracket
+            function resetBracket() {
+                // Clear all winner classes
+                document.querySelectorAll('.player').forEach(player => {
+                    player.classList.remove('winner');
+                    player.classList.remove('winner-highlight');
+                    player.classList.remove('celebrate');
+                });
+                
+                // Reset winner placeholders
+                document.querySelectorAll('[data-winner-of]').forEach(placeholder => {
+                    const originalText = placeholder.dataset.winnerOf === '9' ? 
+                        'btgz.Sharnerf' : `Winner of Match ${placeholder.dataset.winnerOf}`;
+                    placeholder.textContent = originalText;
+                    delete placeholder.dataset.player;
+                });
+                
+                // Clear winners object
+                for (const key in winners) {
+                    delete winners[key];
+                }
+            }
+            
+            // Event listeners
+            simulateBtn.addEventListener('click', simulateTournament);
+            resetBtn.addEventListener('click', resetBracket);
+            
+            // Allow manual winner selection by clicking
+            players.forEach(player => {
+                player.addEventListener('click', function() {
+                    const match = this.closest('.match');
+                    const playersInMatch = match.querySelectorAll('.player:not(.bye)');
+                    
+                    // Remove winner class from all players in match
+                    playersInMatch.forEach(p => p.classList.remove('winner'));
+                    
+                    // Add winner class to clicked player
+                    this.classList.add('winner');
+                    
+                    // Update tournament
+                    const matchId = match.dataset.match;
+                    const winnerName = this.dataset.player || this.textContent;
+                    winners[matchId] = winnerName;
+                    updateNextMatches(matchId, winnerName);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
-
-
